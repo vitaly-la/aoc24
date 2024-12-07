@@ -4,7 +4,7 @@ op3 x y = read $ show x ++ show y
 
 solutions res (x:xt) =
     foldl (
-        \ys z -> filter (<= res) $ concat [[op y z | y <- ys] | op <- [(+), (*), op3]]
+        \ys z -> filter (<= res) [op y z | y <- ys, op <- [(+), (*), op3]]
     ) [x] xt
 
 solve line ans =

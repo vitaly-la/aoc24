@@ -2,7 +2,9 @@ import Data.List (groupBy, sort)
 import Data.Set (fromList, size)
 
 enum = zip [0..]
-combinations xs = concat . map (zip xs) . drop 1 $ scanr (:) [] xs
+
+comb [] = []
+comb (x:xt) = map (x, ) xt ++ comb xt
 
 solve lines =
     let width = length $ lines !! 0
@@ -10,7 +12,7 @@ solve lines =
 
         antennas = [(type', x, y) | (y, line) <- enum lines, (x, type') <- enum line, type' /= '.']
         byType = map (map (\(_, x, y) -> (x, y))) $ groupBy (\(type', _, _) (type'', _, _) -> type' == type'' ) $ sort antennas
-        pairs = concat $ map combinations byType
+        pairs = concat $ map comb byType
 
         getNodes ((x1, y1), (x2, y2)) =
             let (xdiff, ydiff) = (x2 - x1, y2 - y1)

@@ -1,7 +1,9 @@
+import Data.Char (digitToInt)
+
 blocks _ _ [] = []
 blocks file idx (x:xt)
-    | file = (take x $ repeat idx) ++ blocks False idx xt
-    | otherwise = (take x . repeat $ -1) ++ blocks True (idx + 1) xt
+    | file = take x $ repeat idx ++ blocks False idx xt
+    | otherwise = take x $ repeat (-1) ++ blocks True (idx + 1) xt
 
 solve xs =
     let enum = zip [0..] xs
@@ -15,4 +17,4 @@ solve xs =
 
 main = do
     contents <- getContents
-    print . solve . blocks True 0 . map (read . (:[])) . head $ lines contents
+    print . solve . blocks True 0 . map digitToInt . head $ lines contents
